@@ -61,5 +61,42 @@ public class LibroDao {
 		return listaLibros;
 		
 	}
+	
+	public boolean agregarLibroPst(Libro libro) throws SQLException {
+		
+		boolean agregado=false;
+		
+		String titulo = libro.getTitulo();
+		String autor = libro.getAutor();
+		String editorial = libro.getEditorial();
+		String isbn = libro.getIsbn();
+		boolean prestado= libro.isPrestado();
+		//idLibro,titulo,autor,editorial,prestado,fechaPrestamo,fechaDevolucion,isbn,fechaAlta
+		String sql = "insert into libros values (?,?,?,?,?,?,?,?,?)";
+		
+		PreparedStatement preparedStatement= cn.prepareStatement(sql);
+		
+		java.util.Date date=new java.util.Date();
+		Timestamp time=new Timestamp(date.getTime()); //El campo fecha alta coge la fecha del sistema
+		
+		preparedStatement.setInt(1, 0);	//le mandamos cualquier cosa porque es un campo autonumerico,sino daria error
+		preparedStatement.setString(2, titulo);
+		preparedStatement.setString(3, autor);
+		preparedStatement.setString(4, editorial);
+		preparedStatement.setBoolean(5, prestado);
+		preparedStatement.setDate(6, null);
+		preparedStatement.setDate(7, null);
+		preparedStatement.setString(8, isbn);
+		preparedStatement.setTimestamp(9, time);
+		preparedStatement.executeUpdate();
+		preparedStatement=null;
+		
+		agregado=true;
+		
+				
+		return agregado;
+		
+		
+	}
 
 }
